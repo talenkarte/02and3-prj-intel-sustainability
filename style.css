@@ -9,12 +9,13 @@
     --ink: #132435;
     --ink-soft: #5a6b7a;
     --teal: #0f8f72;
-    --card-w: 250px;
-    --rail-y: 108px;
-    --shaft-h: 40px;
+    --card-w: 270px;
+    --rail-y: 92px;
 }
 
 * { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
     margin: 0;
@@ -22,6 +23,58 @@ body {
     color: var(--ink);
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
+}
+
+/* Arabic pages load Tajawal; this keeps Latin numerals/brand names in Poppins
+   while Arabic script renders in a face actually designed for it. */
+[lang="ar"] body {
+    font-family: 'Tajawal', 'Inter', sans-serif;
+}
+
+[lang="ar"] .wordmark,
+[lang="ar"] .hero h1,
+[lang="ar"] .year,
+[lang="ar"] .col-heading,
+[lang="ar"] .title {
+    font-family: 'Tajawal', 'Poppins', sans-serif;
+}
+
+/* ---------- Skip link ---------- */
+.skip-link {
+    position: absolute;
+    inset-inline-start: 12px;
+    top: -60px;
+    background: var(--navy-deep);
+    color: var(--white);
+    padding: 10px 18px;
+    border-radius: 6px;
+    z-index: 100;
+    text-decoration: none;
+    font-weight: 600;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 12px;
+}
+
+/* ---------- Utility bar (language switcher) ---------- */
+.utility-bar {
+    background: var(--navy-deep);
+    padding: 8px 20px;
+    text-align: end;
+}
+
+.utility-bar a {
+    color: #cfe6fb;
+    font-size: 0.85rem;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.utility-bar a:hover,
+.utility-bar a:focus-visible {
+    color: var(--white);
 }
 
 /* ---------- Hero ---------- */
@@ -46,7 +99,7 @@ body {
     height: 8px;
     background: #6fc4ff;
     border-radius: 50%;
-    margin-left: 3px;
+    margin-inline-start: 3px;
     vertical-align: 12px;
 }
 
@@ -75,34 +128,62 @@ body {
     color: rgba(255, 255, 255, 0.88);
 }
 
+/* ---------- Section heading (shared by timeline / pillars / newsletter) ---------- */
+.section-heading {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: var(--navy-deep);
+    text-align: center;
+    margin: 0 0 8px;
+}
+
+[lang="ar"] .section-heading { font-family: 'Tajawal', sans-serif; }
+
+.section-sub {
+    text-align: center;
+    color: var(--ink-soft);
+    max-width: 560px;
+    margin: 0 auto 32px;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
 /* ---------- Timeline section ---------- */
 .timeline-section {
-    padding: 56px 0 48px;
+    padding: 56px 0 32px;
 }
 
 .timeline-scroller {
     position: relative;
     overflow-x: auto;
     overflow-y: visible;
-    padding: var(--rail-y) 40px 24px;
+    padding-block: var(--rail-y) 24px;
+    padding-inline: 40px;
     scroll-snap-type: x mandatory;
-    scroll-padding-left: 40px;
+    scroll-padding-inline-start: 40px;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
 }
 
-/* the rail reads as a circuit trace / data bus that every drive plugs into */
 .rail {
     position: absolute;
     top: var(--rail-y);
-    left: 40px;
-    right: 40px;
-    height: 6px;
-    border-radius: 3px;
-    background:
-        repeating-linear-gradient(to right, rgba(255,255,255,.55) 0 2px, transparent 2px 14px),
-        linear-gradient(180deg, #16405f, #0b2a46 55%, #061a2c);
-    box-shadow: 0 1px 0 rgba(255,255,255,.15) inset, 0 3px 6px rgba(11,42,70,.25);
+    inset-inline: 40px;
+    height: 2px;
+    background: repeating-linear-gradient(
+        to right,
+        var(--blue) 0 10px,
+        var(--blue) 10px 10px
+    );
+}
+
+[dir="rtl"] .rail {
+    background: repeating-linear-gradient(
+        to left,
+        var(--blue) 0 10px,
+        var(--blue) 10px 10px
+    );
 }
 
 .timeline {
@@ -110,12 +191,11 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    align-items: flex-start;
-    gap: 26px;
+    gap: 20px;
     width: max-content;
 }
 
-.card {
+.timeline-card {
     flex-shrink: 0;
     width: var(--card-w);
     scroll-snap-align: start;
@@ -123,147 +203,151 @@ body {
     position: relative;
 }
 
-/* Blue-to-teal gradient across the nine drives: the plastic literally
-   changes colour as the timeline moves from founding toward net-zero. */
-.timeline .card:nth-child(1) { --usb-color: #0068b5; }
-.timeline .card:nth-child(2) { --usb-color: #026dad; }
-.timeline .card:nth-child(3) { --usb-color: #0472a4; }
-.timeline .card:nth-child(4) { --usb-color: #06779c; }
-.timeline .card:nth-child(5) { --usb-color: #087c94; }
-.timeline .card:nth-child(6) { --usb-color: #09808b; }
-.timeline .card:nth-child(7) { --usb-color: #0b8583; }
-.timeline .card:nth-child(8) { --usb-color: #0d8a7a; }
-.timeline .card:nth-child(9) { --usb-color: #0f8f72; }
-
-.usb-toggle {
+.card-toggle {
     all: unset;
     display: block;
     width: 100%;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(11, 42, 70, 0.10);
     cursor: pointer;
-    position: relative;
-    padding-top: var(--shaft-h);
-}
-
-/* ---------- Metal connector shaft: plugs the drive into the rail ---------- */
-.usb-connector {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 38px;
-    height: calc(var(--shaft-h) + 6px);
-    border-radius: 4px 4px 0 0;
-    background:
-        repeating-linear-gradient(to right, transparent 0 8px, rgba(20,26,32,.35) 8px 9px),
-        linear-gradient(180deg, #f2f4f6 0%, #c7ced5 45%, #8d97a2 65%, #b9c1c9 100%);
-    box-shadow: 0 0 0 1px rgba(11,42,70,.25) inset, 0 2px 4px rgba(11,42,70,.2);
-    transition: filter 0.25s ease;
-}
-
-.usb-connector::after {
-    /* the seam where the shell overmould grips the metal shaft */
-    content: "";
-    position: absolute;
-    left: -3px;
-    right: -3px;
-    bottom: 6px;
-    height: 8px;
-    background: var(--usb-color);
-    border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0,0,0,.2) inset;
-}
-
-/* ---------- Shell: the coloured plastic body of the drive ---------- */
-.usb-shell {
-    display: block;
-    position: relative;
-    background: linear-gradient(165deg, color-mix(in srgb, var(--usb-color) 82%, white 18%) 0%, var(--usb-color) 55%, color-mix(in srgb, var(--usb-color) 78%, black 22%) 100%);
-    border-radius: 8px 8px 14px 14px;
-    padding: 14px 12px 18px;
-    box-shadow: 0 4px 14px rgba(11, 42, 70, 0.18);
+    box-sizing: border-box;
+    transform: translateY(0) scale(1);
     transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
                 box-shadow 0.28s ease;
 }
 
-.usb-toggle:hover .usb-shell,
-.usb-toggle:focus .usb-shell {
-    transform: translateY(8px);
-    box-shadow: 0 16px 28px rgba(11, 42, 70, 0.28);
-}
-
-.usb-toggle:hover .usb-connector,
-.usb-toggle:focus .usb-connector {
-    filter: brightness(1.08);
-}
-
-.usb-toggle:focus-visible .usb-shell {
-    outline: 2px solid var(--white);
-    outline-offset: 2px;
-}
-
-/* status LED: dark until the drive is "active" on hover/focus */
-.usb-led {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: rgba(0,0,0,.35);
-    box-shadow: 0 0 0 1px rgba(255,255,255,.15) inset;
-    transition: background 0.25s ease, box-shadow 0.25s ease;
-}
-
-.usb-toggle:hover .usb-led,
-.usb-toggle:focus .usb-led {
-    background: #baffde;
-    box-shadow: 0 0 7px 2px #baffde;
-}
-
-/* label sticker: the milestone photo, taped on slightly askew */
-.usb-label {
+/* Photo strip along the top of each card, bleeding to the rounded corners */
+.card-media {
     display: block;
     width: 100%;
-    height: 108px;
+    height: 120px;
     object-fit: cover;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,.25);
-    transform: rotate(-1.1deg);
+    background: var(--bg);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.timeline .card:nth-child(even) .usb-label {
-    transform: rotate(1.1deg);
+.card-toggle:hover .card-media,
+.card-toggle:focus .card-media {
+    transform: scale(1.08);
 }
 
-.usb-plate {
+.card-body {
     display: block;
-    padding: 14px 4px 0;
+    padding: 18px 20px 22px;
+}
+
+/* lift + scale on interaction, with a deeper shadow to sell the elevation */
+.card-toggle:hover,
+.card-toggle:focus {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 16px 30px rgba(11, 42, 70, 0.22);
+}
+
+/* the rail marker echoes the card's lift with its own subtle pulse */
+.card-toggle:hover + .marker,
+.card-toggle:focus + .marker {
+    transform: scale(1.35);
+}
+
+.marker {
+    position: absolute;
+    top: calc(-1 * var(--rail-y) + 8px);
+    inset-inline-start: 20px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--blue);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--blue);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.timeline-card[data-status="goal"] .marker {
+    background: var(--white);
+    box-shadow: 0 0 0 2px var(--teal);
+}
+
+.card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(0, 104, 181, 0.09);
+    color: var(--blue);
+    margin-bottom: 14px;
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.timeline-card[data-status="goal"] .card-icon {
+    background: rgba(15, 143, 114, 0.09);
+    color: var(--teal);
+}
+
+.card-toggle:hover .card-icon,
+.card-toggle:focus .card-icon {
+    transform: scale(1.1) rotate(-4deg);
+}
+
+[dir="rtl"] .card-toggle:hover .card-icon,
+[dir="rtl"] .card-toggle:focus .card-icon {
+    transform: scale(1.1) rotate(4deg);
+}
+
+/* Status badge: never rely on color alone to say "done" vs "goal" */
+.status-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(0, 104, 181, 0.1);
+    color: var(--blue);
+    margin-bottom: 10px;
+}
+
+.timeline-card[data-status="goal"] .status-badge {
+    background: rgba(15, 143, 114, 0.12);
+    color: var(--teal);
 }
 
 .year {
     display: block;
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--white);
-    margin-bottom: 4px;
+    font-size: 1.7rem;
+    color: var(--blue);
+    margin-bottom: 6px;
+}
+
+.timeline-card[data-status="goal"] .year {
+    color: var(--teal);
 }
 
 .title {
     display: block;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
-    font-size: 0.98rem;
+    font-size: 1.02rem;
     line-height: 1.35;
-    color: var(--white);
+    color: var(--ink);
 }
 
 .desc {
     display: block;
-    font-size: 0.88rem;
-    line-height: 1.5;
-    color: rgba(255,255,255,.85);
-    text-align: left;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    text-align: start;
     max-height: 0;
     opacity: 0;
     overflow: hidden;
@@ -271,56 +355,17 @@ body {
     margin-top: 0;
 }
 
-.usb-toggle:hover .desc,
-.usb-toggle:focus .desc,
-.usb-toggle:focus-visible .desc {
+.card-toggle:hover .desc,
+.card-toggle:focus .desc,
+.card-toggle:focus-visible .desc {
     max-height: 220px;
     opacity: 1;
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
-/* ---------- Goal drives: still boxed up, not yet plugged in for real ---------- */
-.card[data-status="goal"] .usb-connector {
-    background: repeating-linear-gradient(to right, transparent 0 8px, rgba(11,42,70,.18) 8px 9px, transparent 9px 9px), transparent;
-    border: 1.5px dashed var(--usb-color);
-    box-shadow: none;
-}
-
-.card[data-status="goal"] .usb-connector::after {
-    background: transparent;
-    border: 1.5px dashed var(--usb-color);
-    bottom: 5px;
-}
-
-.card[data-status="goal"] .usb-shell {
-    background: rgba(255,255,255,.55);
-    border: 1.5px dashed var(--usb-color);
-    box-shadow: none;
-}
-
-.card[data-status="goal"] .year,
-.card[data-status="goal"] .title {
-    color: var(--usb-color);
-}
-
-.card[data-status="goal"] .desc {
-    color: var(--ink-soft);
-}
-
-.card[data-status="goal"] .usb-label {
-    filter: saturate(.55) brightness(1.03);
-    opacity: .9;
-}
-
-.card[data-status="goal"] .usb-led {
-    background: transparent;
-    border: 1.5px dashed var(--usb-color);
-}
-
-.card[data-status="goal"] .usb-toggle:hover .usb-led,
-.card[data-status="goal"] .usb-toggle:focus .usb-led {
-    background: var(--usb-color);
-    box-shadow: 0 0 6px 2px color-mix(in srgb, var(--usb-color) 60%, transparent);
+.card-toggle:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
 }
 
 .hint {
@@ -330,67 +375,229 @@ body {
     margin: 8px 0 0;
 }
 
-/* ---------- Reduced motion ---------- */
-@media (prefers-reduced-motion: reduce) {
-    .desc, .usb-shell, .usb-connector, .usb-led { transition: none; }
-    .usb-toggle:hover .usb-shell, .usb-toggle:focus .usb-shell { transform: none; }
+/* ---------- Pillars (three-column section) ---------- */
+.pillars-section {
+    padding: 8px 0 56px;
 }
 
-/* ---------- Mobile: vertical bus, drives plug in from the left ---------- */
-@media (max-width: 720px) {
-    :root { --shaft-h: 34px; }
+.pillar {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 32px 28px;
+    height: 100%;
+    box-shadow: 0 4px 14px rgba(11, 42, 70, 0.08);
+    text-align: center;
+}
 
+.pillar-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 104, 181, 0.1);
+    color: var(--blue);
+}
+
+.pillar-icon svg { width: 28px; height: 28px; }
+
+.col-heading {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--navy-deep);
+    margin: 0 0 12px;
+}
+
+.pillar p {
+    color: var(--ink-soft);
+    font-size: 0.96rem;
+    line-height: 1.6;
+    margin: 0 0 18px;
+}
+
+.pillar-link {
+    color: var(--blue);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-size: 0.94rem;
+}
+
+.pillar-link:hover,
+.pillar-link:focus-visible {
+    color: var(--navy-deep);
+}
+
+/* ---------- Newsletter ---------- */
+.newsletter-section {
+    background: var(--navy-deep);
+    color: var(--white);
+    padding: 56px 20px;
+    text-align: center;
+}
+
+.newsletter-section .section-heading {
+    color: var(--white);
+}
+
+.newsletter-icon {
+    display: inline-flex;
+    vertical-align: -6px;
+    margin-inline-end: 8px;
+}
+
+.newsletter-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    max-width: 480px;
+    margin: 28px auto 0;
+}
+
+.newsletter-form .field-group {
+    flex: 1 1 260px;
+    text-align: start;
+}
+
+.newsletter-form label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.newsletter-form input[type="email"] {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.newsletter-form input[type="email"]::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.newsletter-form input[type="email"]:focus-visible {
+    outline: 3px solid #6fc4ff;
+    outline-offset: 2px;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.newsletter-form .hint-text {
+    display: block;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin-top: 6px;
+}
+
+.subscribe-btn {
+    min-height: 46px;
+    padding: 10px 26px;
+    border-radius: 8px;
+    border: none;
+    background: var(--blue-light);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    align-self: flex-start;
+    margin-top: 26px;
+}
+
+[lang="ar"] .subscribe-btn { font-family: 'Tajawal', sans-serif; }
+
+.subscribe-btn:hover { background: #3d94e8; }
+
+.subscribe-btn:focus-visible {
+    outline: 3px solid #6fc4ff;
+    outline-offset: 3px;
+}
+
+.form-confirm {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: #9be8cf;
+    font-weight: 600;
+    min-height: 1.2em;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+    background: #08172a;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    padding: 20px;
+    font-size: 0.85rem;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .desc, .card-toggle, .marker, .card-icon { transition: none; }
+    .card-toggle:hover, .card-toggle:focus { transform: none; }
+    .card-toggle:hover .card-icon, .card-toggle:focus .card-icon { transform: none; }
+}
+
+/* ---------- Mobile: vertical rail ---------- */
+@media (max-width: 720px) {
     .hero { padding: 48px 20px 56px; }
 
     .timeline-scroller {
         overflow-x: visible;
-        padding: 8px 20px 8px 56px;
+        padding-block: 8px;
+        padding-inline-start: 44px;
+        padding-inline-end: 20px;
     }
 
     .rail {
         top: 8px;
         bottom: 8px;
-        left: 24px;
-        right: auto;
-        width: 6px;
+        inset-inline-start: 12px;
+        inset-inline-end: auto;
+        width: 2px;
         height: auto;
-        background:
-            repeating-linear-gradient(to bottom, rgba(255,255,255,.55) 0 2px, transparent 2px 14px),
-            linear-gradient(90deg, #16405f, #0b2a46 55%, #061a2c);
+        background: repeating-linear-gradient(
+            to bottom,
+            var(--blue) 0 10px,
+            var(--blue) 10px 10px
+        );
+    }
+
+    [dir="rtl"] .rail {
+        background: repeating-linear-gradient(
+            to bottom,
+            var(--blue) 0 10px,
+            var(--blue) 10px 10px
+        );
     }
 
     .timeline {
         flex-direction: column;
         width: 100%;
-        gap: 26px;
+        gap: 22px;
     }
 
-    .card { width: 100%; }
+    .timeline-card { width: 100%; }
 
-    .usb-toggle {
-        padding-top: 0;
-        padding-left: var(--shaft-h);
-        display: flex;
-        align-items: stretch;
+    .marker {
+        top: 22px;
+        inset-inline-start: -32px;
     }
-
-    .usb-connector {
-        top: 50%;
-        left: 0;
-        transform: translate(-38px, -50%) rotate(-90deg);
-    }
-
-    .usb-connector::after {
-        left: -3px;
-        right: -3px;
-    }
-
-    .usb-toggle:hover .usb-shell,
-    .usb-toggle:focus .usb-shell {
-        transform: translateX(8px);
-    }
-
-    .usb-shell { flex: 1; border-radius: 8px 14px 14px 8px; }
 
     .hint { padding: 0 20px; }
+
+    .subscribe-btn { margin-top: 0; align-self: stretch; }
 }
