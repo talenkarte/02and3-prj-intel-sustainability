@@ -1,7 +1,7 @@
 /* ---------- Tokens ---------- */
 :root {
     --blue: #0068b5;
-    --blue-light: #1c7ed6;
+    --blue-light: #1567b8;
     --navy: #0b2a46;
     --navy-deep: #08355c;
     --bg: #eef1f4;
@@ -125,7 +125,7 @@ body {
     margin: 0 auto;
     font-size: 1.1rem;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.88);
+    color: rgba(255, 255, 255, 0.95);
 }
 
 /* ---------- Section heading (shared by timeline / pillars / newsletter) ---------- */
@@ -431,6 +431,52 @@ body {
     color: var(--navy-deep);
 }
 
+/* ---------- FAQ accordion ---------- */
+.faq-section {
+    padding: 8px 0 56px;
+}
+
+.faq-accordion {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.faq-accordion .accordion-item {
+    background: var(--white);
+    border: 1px solid #dfe5ea;
+    border-radius: 10px !important;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.faq-accordion .accordion-button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.02rem;
+    color: var(--navy-deep);
+    background: var(--white);
+    padding: 18px 20px;
+}
+
+[lang="ar"] .faq-accordion .accordion-button { font-family: 'Tajawal', sans-serif; }
+
+.faq-accordion .accordion-button:not(.collapsed) {
+    color: var(--blue);
+    background: rgba(0, 104, 181, 0.06);
+    box-shadow: none;
+}
+
+.faq-accordion .accordion-button:focus {
+    box-shadow: 0 0 0 3px rgba(0, 104, 181, 0.3);
+}
+
+.faq-accordion .accordion-body {
+    color: var(--ink-soft);
+    font-size: 0.96rem;
+    line-height: 1.6;
+    padding: 4px 20px 20px;
+}
+
 /* ---------- Newsletter ---------- */
 .newsletter-section {
     background: var(--navy-deep);
@@ -450,20 +496,11 @@ body {
 }
 
 .newsletter-form {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    max-width: 480px;
+    max-width: 520px;
     margin: 28px auto 0;
 }
 
-.newsletter-form .field-group {
-    flex: 1 1 260px;
-    text-align: start;
-}
-
-.newsletter-form label {
+.newsletter-form .form-label {
     display: block;
     font-size: 0.85rem;
     font-weight: 600;
@@ -471,7 +508,7 @@ body {
     color: rgba(255, 255, 255, 0.9);
 }
 
-.newsletter-form input[type="email"] {
+.newsletter-form .form-control {
     width: 100%;
     min-height: 46px;
     padding: 10px 14px;
@@ -483,25 +520,32 @@ body {
     font-family: inherit;
 }
 
-.newsletter-form input[type="email"]::placeholder {
+.newsletter-form .form-control::placeholder {
     color: rgba(255, 255, 255, 0.55);
 }
 
-.newsletter-form input[type="email"]:focus-visible {
-    outline: 3px solid #6fc4ff;
-    outline-offset: 2px;
+.newsletter-form .form-control:focus {
     background: rgba(255, 255, 255, 0.14);
+    border-color: #6fc4ff;
+    color: var(--white);
+    box-shadow: none;
 }
 
-.newsletter-form .hint-text {
+.newsletter-form .form-control:focus-visible {
+    outline: 3px solid #6fc4ff;
+    outline-offset: 2px;
+}
+
+.newsletter-form .form-text {
     display: block;
     font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(255, 255, 255, 0.75);
     margin-top: 6px;
 }
 
 .subscribe-btn {
     min-height: 46px;
+    width: 100%;
     padding: 10px 26px;
     border-radius: 8px;
     border: none;
@@ -513,17 +557,19 @@ body {
     letter-spacing: 0.3px;
     cursor: pointer;
     transition: background 0.2s ease;
-    align-self: flex-start;
-    margin-top: 26px;
 }
 
 [lang="ar"] .subscribe-btn { font-family: 'Tajawal', sans-serif; }
 
-.subscribe-btn:hover { background: #3d94e8; }
+.subscribe-btn:hover { background: #1f72bd; }
 
 .subscribe-btn:focus-visible {
     outline: 3px solid #6fc4ff;
     outline-offset: 3px;
+}
+
+@media (min-width: 576px) {
+    .subscribe-btn { width: auto; }
 }
 
 .form-confirm {
@@ -537,10 +583,40 @@ body {
 /* ---------- Footer ---------- */
 .site-footer {
     background: #08172a;
-    color: rgba(255, 255, 255, 0.6);
-    text-align: center;
-    padding: 20px;
+    color: rgba(255, 255, 255, 0.75);
+    padding: 24px 20px;
     font-size: 0.85rem;
+}
+
+.footer-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px 24px;
+    text-align: center;
+}
+
+.footer-copy { margin: 0; }
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px 20px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.footer-links a:hover,
+.footer-links a:focus-visible {
+    color: var(--white);
 }
 
 /* ---------- Reduced motion ---------- */
